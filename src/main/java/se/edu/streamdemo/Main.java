@@ -14,11 +14,14 @@ public class Main {
 
         System.out.println("Printing all data ...");
         printAllData(tasksData);
+        printDataWithStreams(tasksData);
 
         System.out.println("Printing deadlines ...");
         printDeadlines(tasksData);
+        printDeadlinesWithStreams(tasksData);
 
-        System.out.println("Total number of deadlines: " + countDeadlines(tasksData));
+        System.out.println("Total number of deadlines (iterating): " + countDeadlines(tasksData));
+        System.out.println("Total number of deadlines (streams): " + countDeadlines(tasksData));
 
     }
 
@@ -32,13 +35,27 @@ public class Main {
         return count;
     }
 
+    private static int countDeadlinesWithStreams(ArrayList<Task> tasksData) {
+        return (int) tasksData.stream()             // create stream
+                .filter(t -> t instanceof Deadline) // lambda function
+                .count();                           // terminal operation; aggregate operation
+    }
+
     public static void printAllData(ArrayList<Task> tasksData) {
+        System.out.println("Printing data with iteration");
         for (Task t : tasksData) {
             System.out.println(t);
         }
     }
 
+    public static void printDataWithStreams(ArrayList<Task> tasksData) {
+        System.out.println("Printing data with streams");
+        tasksData.stream()                      // create stream
+                .forEach(System.out::println);  // terminal operator
+    }
+
     public static void printDeadlines(ArrayList<Task> tasksData) {
+        System.out.println("Printing deadlines with iteration");
         for (Task t : tasksData) {
             if (t instanceof Deadline) {
                 System.out.println(t);
@@ -46,4 +63,10 @@ public class Main {
         }
     }
 
+    public static void printDeadlinesWithStreams(ArrayList<Task> tasksData) {
+        System.out.println("Printing deadlines with streams");
+        tasksData.stream()                              // create stream
+                .filter(t -> t instanceof Deadline)     // lambda function
+                .forEach(System.out::println);          // terminal operator
+    }
 }
